@@ -89,17 +89,19 @@
         <!-- type是number start -->
         <template v-if="type === 'number'">
             <div class="x-input-inner-warp">
+                <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i class="icon-font icon-reduce"></i></a>
                 <!-- input start -->
                 <input
-                    ref="input"
+                    ref="number"
+                    :min="min"
+                    :max="max"
+                    :step="step"
                     :class="inputClass"
                     :type="type"
                     :value="currentValue"
                     :placeholder="placeholder"
                     :disabled="disabled"
                     :readonly="readonly"
-                    :minlength="minlength"
-                    :maxlength="maxlength"
                     :autocomplete="autocomplete"
                     @input="handleInput"
                     @focus="handleFocus"
@@ -110,6 +112,7 @@
                     @keypress="handleKeypress"
                 />
                 <!-- input //end -->
+                <a href="javascript:" class="x-input-increase" @click="handleIncrease"><i class="icon-font icon-increase"></i></a>
             </div>
         </template>
         <!-- type是number //end -->
@@ -127,7 +130,7 @@
  * icon          string
  * max-length    number
  * min-length    number                                                  0
- * disable       boolean         true / false                            false
+ * disabled       boolean         true / false                            false
  * ...
  *
  * */
@@ -183,6 +186,18 @@ export default {
         autocomplete: {
             type: String,
             default: 'off'
+        },
+        min: {
+            type: Number,
+            default: -Infinity //负无穷大
+        },
+        max: {
+            type: Number,
+            default: Infinity //正无穷大
+        },
+        step: {
+            type: Number,
+            default: 1
         }
     },
     data() {
@@ -227,6 +242,18 @@ export default {
         handleKeypress (event) {
             this.$emit('on-keypress', event);
         },
+        handleIncrease() { // 增加
+            let _total = this.accAdd(this.value, this.step);
+            if(_total > this.max) { return }
+            this.$emit('input', _total);
+            this.setCurrentValue(_total);
+        },
+        handleReduce() { // 减少
+            let _total = this.accSub(this.value, this.step);
+            if(_total < this.min) { return }
+            this.$emit('input', _total);
+            this.setCurrentValue(_total);
+        },
         cleanInput(){
             this.$emit('input', '');
         },
@@ -247,6 +274,50 @@ export default {
             }else{
                 this.$refs.input.blur();
             }
+        },
+        accAdd(arg1, arg2) { //浮点数相加
+            let r1, r2, m;
+            try {
+                r1 = arg1.toString().split('.')[1].length;
+            } catch (e) {
+                r1 = 0
+            }
+            try {
+                r2 = arg2.toString().split('.')[1].length;
+            } catch (e) {
+                r2 = 0
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            return (this.accMul(arg1, m) + this.accMul(arg2, m)) / m;
+        },
+        accSub(arg1, arg2) { //浮点数相减
+            return this.accAdd(arg1, -arg2);
+        },
+        accMul(arg1, arg2) { //浮点数相乘
+            let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+            try {
+                m += s1.split('.')[1].length;
+            } catch (e) {
+            }
+            try {
+                m += s2.split('.')[1].length;
+            } catch (e) {
+            }
+            return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m);
+        },
+        accDiv(arg1, arg2) { //浮点数相除精确计算
+            let t1 = 0, t2 = 0, r1, r2;
+            try {
+                t1 = arg1.toString().split('.')[1].length;
+            } catch (e) {
+            }
+            try {
+                t2 = arg2.toString().split('.')[1].length;
+            } catch (e) {
+            }
+            r1 = Number(arg1.toString().replace('.', ''));
+            r2 = Number(arg2.toString().replace('.', ''));
+            return (r1 / r2) * Math.pow(10, t2 - t1);
         }
     },
     watch: {
@@ -264,7 +335,8 @@ export default {
                     [`${prefixCls}-disabled`]: this.disabled,
                     [`${prefixCls}-readonly`]: this.readonly,
                     [`${prefixCls}-with-prefix`]: this.prefix || this.prefixIcon,
-                    [`${prefixCls}-with-suffix`]: this.suffix || this.suffixIcon
+                    [`${prefixCls}-with-suffix`]: this.suffix || this.suffixIcon,
+                    [`${prefixCls}-with-number`]: this.type === 'number'
                 }
             ];
         },
@@ -318,7 +390,8 @@ export default {
 @success: #398439;
 @warning: #d58512;
 @danger: #ac2925;
-@disabled: #efefef;
+
+@disabled: #dddee1;
 @readonly: #efefef;
 @borderRadius: 4px;
 
@@ -366,6 +439,35 @@ export default {
             color: @fontColor;
         }
 
+        .x-input-reduce {
+            position: absolute;
+            left: 0;
+            top: 0;
+            text-align: center;
+            color: @fontColor;
+            border: 1px solid @default;
+            border-top-left-radius: @borderRadius;
+            border-bottom-left-radius: @borderRadius;
+            &:hover{
+                color: rgba(45,140,240,1);
+                border-color: rgba(45,140,240,.5);
+            }
+        }
+
+        .x-input-increase {
+            position: absolute;
+            right: 0;
+            top: 0;
+            text-align: center;
+            color: @fontColor;
+            border: 1px solid @default;
+            border-top-right-radius: @borderRadius;
+            border-bottom-right-radius: @borderRadius;
+            &:hover{
+                color: rgba(45,140,240,1);
+                border-color: rgba(45,140,240,.5);
+            }
+        }
         /* 输入框样式 */
         .x-input {
             max-width: 100%;
@@ -427,7 +529,12 @@ export default {
             &-disabled {
                 border-color: @disabled;
                 color: @disabled;
+                background: #f9f9f9;
                 cursor: not-allowed;
+
+                &:hover{
+                    border-color: @disabled;
+                }
             }
             &-readonly {
                 border-color: @readonly;
@@ -465,39 +572,51 @@ export default {
 
     /* 输入框size，对应的icon */
     &&-s {
-        .x-input-with-prefix {
+        .x-input-with-number {
+            padding-left: 26px + 4px;
+            padding-right: 26px + 4px;
+        }
+        .x-input-with-prefix  {
             padding-left: 26px;
         }
         .x-input-with-suffix, .x-input-icon + .x-input {
             padding-right: 26px;
         }
-        .x-input-icon, .x-input-prefix, .x-input-suffix {
+        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce {
             width: 26px;
             height: 26px;
             line-height: 26px;
         }
     }
     &&-m {
+        .x-input-with-number {
+            padding-left: 30px + 8px;
+            padding-right: 30px + 8px;
+        }
         .x-input-with-prefix {
             padding-left: 30px;
         }
         .x-input-with-suffix, .x-input-icon + .x-input {
             padding-right: 30px;
         }
-        .x-input-icon, .x-input-prefix, .x-input-suffix {
+        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce  {
             width: 30px;
             height: 30px;
             line-height: 30px;
         }
     }
     &&-l {
+        .x-input-with-number {
+            padding-left: 34px + 12px;
+            padding-right: 34px + 12px;
+        }
         .x-input-with-prefix {
             padding-left: 34px;
         }
         .x-input-with-suffix, .x-input-icon + .x-input{
             padding-right: 34px;
         }
-        .x-input-icon, .x-input-prefix, .x-input-suffix {
+        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce  {
             width: 34px;
             height: 34px;
             line-height: 34px;

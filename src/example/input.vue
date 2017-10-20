@@ -104,6 +104,13 @@
             </div>
             <div class="col-3">
                 <x-input
+                    v-model="xInputNumber.value"
+                    :type="xInputNumber.type"
+                >
+                </x-input>
+            </div>
+            <div class="col-3">
+                <x-input
                     ref="sInput"
                     v-model="xInputCleanable.value"
                     :placeholder="xInputCleanable.placeholder"
@@ -240,6 +247,11 @@ export default {
             xInputReadonly: {
                 value: '这里是只读内容',
                 type: 'text'
+            },
+
+            xInputNumber: {
+                value: 0,
+                type: 'number'
             },
 
             xInputTextareaReadonly: {

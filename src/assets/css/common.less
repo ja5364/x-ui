@@ -126,6 +126,14 @@ button,input {
     overflow: visible
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type="number"]{
+    -moz-appearance: textfield;
+}
+
 button,select {
     text-transform: none
 }
@@ -243,7 +251,6 @@ ol,ul {
 input::-ms-clear,input::-ms-reveal {
     display: none
 }
-
 a {
     color: #333;
     text-decoration: none;
@@ -259,7 +266,6 @@ a:hover {
     -webkit-transition-duration: 0.5s;
     -webkit-transition-timing-function: ease;
 }
-
 .relative {
     position: relative;
 }

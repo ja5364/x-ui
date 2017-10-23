@@ -89,7 +89,7 @@
         <!-- type是number start -->
         <template v-if="type === 'number'">
             <div class="x-input-inner-warp">
-                <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i class="icon-font icon-reduce"></i></a>
+                <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i class="icon-font icon-reduce icon-font18"></i></a>
                 <!-- input start -->
                 <input
                     ref="number"
@@ -112,7 +112,7 @@
                     @keypress="handleKeypress"
                 />
                 <!-- input //end -->
-                <a href="javascript:" class="x-input-increase" @click="handleIncrease"><i class="icon-font icon-increase"></i></a>
+                <a href="javascript:" class="x-input-increase" @click="handleIncrease"><i class="icon-font icon-increase icon-font18"></i></a>
             </div>
         </template>
         <!-- type是number //end -->
@@ -128,9 +128,11 @@
  * placeholder   string                                                  ''
  * size          string          s / m / l                               m
  * icon          string
- * max-length    number
- * min-length    number                                                  0
- * disabled       boolean         true / false                            false
+ * maxlength     number
+ * minlength     number
+ * max           number
+ * min           number                                                 infinity
+ * disabled      boolean         true / false                            false
  * ...
  *
  * */
@@ -380,281 +382,7 @@ export default {
 </script>
 
 <style lang="less">
-@white: #fff;
-@fontColor: #777;
-@index: #333;
 
-@default: #dddee1;
-@primary: #337ab7;
-@info: #269abc;
-@success: #398439;
-@warning: #d58512;
-@danger: #ac2925;
-
-@disabled: #dddee1;
-@readonly: #efefef;
-@borderRadius: 4px;
-
-.x-input-warp {
-    display: inline-block;
-    width:100%;
-    position: relative;
-    vertical-align: middle;
-
-    .x-input-prepend, .x-input-append{
-        padding: 0 5px;
-        background: #efefef;
-        border: 1px solid @default;
-        box-sizing: border-box;
-    }
-
-    /*  */
-    .x-input-prepend{
-        border-right: none;
-        border-top-left-radius: @borderRadius;
-        border-bottom-left-radius: @borderRadius;
-    }
-    .x-input-append {
-        border-left: none;
-        border-top-right-radius: @borderRadius;
-        border-bottom-right-radius: @borderRadius;
-    }
-    .x-input-inner-warp {
-        position: relative;
-
-        /* 输入框前置图标 */
-        .x-input-prefix {
-            position: absolute;
-            left: 0;
-            top: 0;
-            text-align: center;
-            color: @fontColor;
-        }
-        /* 输入框后置图标 */
-        .x-input-suffix {
-            position: absolute;
-            right: 0;
-            top: 0;
-            text-align: center;
-            color: @fontColor;
-        }
-
-        .x-input-reduce {
-            position: absolute;
-            left: 0;
-            top: 0;
-            text-align: center;
-            color: @fontColor;
-            border: 1px solid @default;
-            border-top-left-radius: @borderRadius;
-            border-bottom-left-radius: @borderRadius;
-            &:hover{
-                color: rgba(45,140,240,1);
-                border-color: rgba(45,140,240,.5);
-            }
-        }
-
-        .x-input-increase {
-            position: absolute;
-            right: 0;
-            top: 0;
-            text-align: center;
-            color: @fontColor;
-            border: 1px solid @default;
-            border-top-right-radius: @borderRadius;
-            border-bottom-right-radius: @borderRadius;
-            &:hover{
-                color: rgba(45,140,240,1);
-                border-color: rgba(45,140,240,.5);
-            }
-        }
-        /* 输入框样式 */
-        .x-input {
-            max-width: 100%;
-            width:100%;
-            vertical-align: bottom;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            background: transparent;
-            color: @index;
-            box-sizing: border-box;
-            transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
-
-            &:focus {
-                color: @index;
-                border-color: rgba(45,140,240,.5);
-                box-shadow: 0 0 0 2px rgba(45,140,240,.2);
-            }
-            &:hover {
-                color: @index;
-                border-color: rgba(45,140,240,.5);
-            }
-
-            &-s {
-                height: 26px;
-                padding: 2px 4px;
-            }
-            &-m {
-                height: 30px;
-                padding: 5px 8px;
-            }
-            &-l {
-                height: 34px;
-                padding: 8px 12px;
-            }
-
-            &-default {
-                border-color: @default;
-            }
-            &-primary {
-                border-color: @primary;
-                color: @primary;
-            }
-            &-info {
-                border-color: @info;
-                color: @info;
-            }
-            &-success {
-                border-color: @success;
-                color: @success;
-            }
-            &-warning {
-                border-color: @warning;
-                color: @warning;
-            }
-            &-danger {
-                border-color: @danger;
-                color: @danger;
-            }
-            &-disabled {
-                border-color: @disabled;
-                color: @disabled;
-                background: #f9f9f9;
-                cursor: not-allowed;
-
-                &:hover{
-                    border-color: @disabled;
-                }
-            }
-            &-readonly {
-                border-color: @readonly;
-                color: @fontColor;
-                cursor: text;
-
-                &:hover,&:focus{
-                    border-color: @readonly;
-                    color: @fontColor;
-                    box-shadow: none;
-                }
-            }
-        }
-
-        textarea.x-input{
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .x-input-icon {
-            position: absolute;
-            right: 0;
-            top: 0;
-            text-align: center;
-            color: @fontColor;
-            &.icon-btn {
-                cursor: pointer;
-            }
-            &.icon-btn:hover{
-                color: @danger;
-            }
-        }
-    }
-
-    /* 输入框size，对应的icon */
-    &&-s {
-        .x-input-with-number {
-            padding-left: 26px + 4px;
-            padding-right: 26px + 4px;
-        }
-        .x-input-with-prefix  {
-            padding-left: 26px;
-        }
-        .x-input-with-suffix, .x-input-icon + .x-input {
-            padding-right: 26px;
-        }
-        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce {
-            width: 26px;
-            height: 26px;
-            line-height: 26px;
-        }
-    }
-    &&-m {
-        .x-input-with-number {
-            padding-left: 30px + 8px;
-            padding-right: 30px + 8px;
-        }
-        .x-input-with-prefix {
-            padding-left: 30px;
-        }
-        .x-input-with-suffix, .x-input-icon + .x-input {
-            padding-right: 30px;
-        }
-        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce  {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-        }
-    }
-    &&-l {
-        .x-input-with-number {
-            padding-left: 34px + 12px;
-            padding-right: 34px + 12px;
-        }
-        .x-input-with-prefix {
-            padding-left: 34px;
-        }
-        .x-input-with-suffix, .x-input-icon + .x-input{
-            padding-right: 34px;
-        }
-        .x-input-icon, .x-input-prefix, .x-input-suffix, .x-input-increase, .x-input-reduce  {
-            width: 34px;
-            height: 34px;
-            line-height: 34px;
-        }
-    }
-
-    &&-group{
-        display: table;
-    }
-
-    &&-group-prepend{
-        .x-input{
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-    }
-    &&-group-append{
-        .x-input{
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-    }
-    &&-group .x-input-prepend,
-    &&-group .x-input-append,
-    &&-group .x-input-inner-warp {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    &&-textarea{
-        .x-input-icon {
-            right: 0;
-        }
-        .x-input-icon + .x-input{
-            padding-right: 18px !important;
-        }
-    }
-}
 
 </style>
 <style scoped>

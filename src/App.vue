@@ -17,4 +17,3 @@ export default {
 <style src='./assets/css/iconfont.css'></style>
 <style lang='less' src='./assets/css/common.less'></style>
 <style lang='less' src='./assets/css/index.less'></style>
-

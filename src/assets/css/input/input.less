@@ -7,7 +7,7 @@
 
     .x-input-prepend, .x-input-append{
         padding: 0 5px;
-        background: #efefef;
+        background: @grey-light;
         border: 1px solid @default-border-color;
         box-sizing: border-box;
     }
@@ -15,13 +15,13 @@
     /*  */
     .x-input-prepend{
         border-right: none;
-        border-top-left-radius: @borderRadius;
-        border-bottom-left-radius: @borderRadius;
+        border-top-left-radius: @border-radius-width;
+        border-bottom-left-radius: @border-radius-width;
     }
     .x-input-append {
         border-left: none;
-        border-top-right-radius: @borderRadius;
-        border-bottom-right-radius: @borderRadius;
+        border-top-right-radius: @border-radius-width;
+        border-bottom-right-radius: @border-radius-width;
     }
     .x-input-inner-warp {
         position: relative;
@@ -32,7 +32,7 @@
             left: 0;
             top: 0;
             text-align: center;
-            color: @fontColor;
+            color: @default-text-color;
         }
         /* 输入框后置图标 */
         .x-input-suffix {
@@ -40,7 +40,7 @@
             right: 0;
             top: 0;
             text-align: center;
-            color: @fontColor;
+            color: @default-text-color;
         }
 
         .x-input-reduce {
@@ -48,11 +48,11 @@
             left: 0;
             top: 0;
             text-align: center;
-            color: @fontColor;
+            color: @default-text-color;
             border: 1px solid transparent;
             border-right-color: @default-border-color;
-            border-top-left-radius: @borderRadius;
-            border-bottom-left-radius: @borderRadius;
+            border-top-left-radius: @border-radius-width;
+            border-bottom-left-radius: @border-radius-width;
             &:hover{
                 color: rgba(45,140,240,1);
                 border-color: @border-hover-color;
@@ -65,11 +65,11 @@
             right: 0;
             top: 0;
             text-align: center;
-            color: @fontColor;
+            color: @default-text-color;
             border: 1px solid transparent;
             border-left-color: @default-border-color;
-            border-top-right-radius: @borderRadius;
-            border-bottom-right-radius: @borderRadius;
+            border-top-right-radius: @border-radius-width;
+            border-bottom-right-radius: @border-radius-width;
             &:hover{
                 color: rgba(45,140,240,1);
                 border-color: @border-hover-color;
@@ -146,13 +146,13 @@
             }
             &-readonly {
                 border-color: @readonly-border-color;
-                color: @fontColor;
+                color: @default-text-color;
                 background: @readonly-bg-color;
                 cursor: text;
 
                 &:hover,&:focus{
                     border-color: @readonly-border-color;
-                    color: @fontColor;
+                    color: @default-text-color;
                     background: @readonly-bg-color;
                     box-shadow: none;
                 }
@@ -170,7 +170,7 @@
             right: 0;
             top: 0;
             text-align: center;
-            color: @fontColor;
+            color: @default-text-color;
             &.icon-btn {
                 cursor: pointer;
             }

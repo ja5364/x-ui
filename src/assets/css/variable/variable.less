@@ -3,17 +3,12 @@
  * lighten(#f00, 10%) //变亮
  */
 
-
 @white: #fff;
 @grey: #dddee1;
 @black: #000;
-
+@base: #777;
 @grey-light: lighten(@grey, 10%); // #efefef
 @grey-dark: darken(@grey, 5%); // #cfd1d5
-
-
-@fontColor: #777;
-@index: #333;
 
 
 @primary: #337ab7;
@@ -22,14 +17,15 @@
 @warning: #d58512;
 @danger: #ac2925;
 
-@disabled: @grey;
-@readonly: @grey-light;
-
 @box-shadow-color: #d5e8fc;
+
+@border-hover-color: #96c5f7;
+
+@border-radius-width: 4px;
 
 /* border-color */
 @default-border-color: @grey;
-@disabled-border-color: lighten(@grey, 5%);
+@disabled-border-color: lighten(@grey, 6.5%);
 @readonly-border-color: lighten(@grey, 6.5%);
 @primary-border-color: darken(@primary, 6.5%);
 @info-border-color: darken(@info, 6.5%);
@@ -37,9 +33,6 @@
 @warning-border-color: darken(@warning, 6.5%);
 @danger-border-color: darken(@danger, 6.5%);
 
-@border-hover-color: rgba(45,140,240,.5);
-
-@borderRadius: 4px;
 
 /* background-color */
 @default-bg-color: @white;
@@ -53,8 +46,8 @@
 
 /* text-color */
 @default-text-color: #333;
-@disabled-text-color: @grey;
-@readonly-text-color: @grey;
+@disabled-text-color: @base;
+@readonly-text-color: @base;
 @primary-text-color: @primary;
 @info-text-color: @info;
 @success-text-color: @success;

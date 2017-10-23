@@ -90,7 +90,7 @@
             <div class="col-3">
                 <x-input
                     v-model="xInput.value"
-                    cleanable
+                    clea
                 >
                     <span slot="prepend">￥</span>
                     <span slot="append">.00</span>

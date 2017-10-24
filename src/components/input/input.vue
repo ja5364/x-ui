@@ -3,23 +3,30 @@
         <!-- type是text start -->
         <template v-if="type === 'text' || type === 'password'">
             <!-- 前置内容 start -->
-            <div v-if="prepend" class="x-input-prepend"><slot name="prepend"></slot></div>
+            <div v-if="prepend" class="x-input-prepend">
+                <slot name="prepend"></slot>
+            </div>
             <!-- 前置内容 //end -->
 
             <!-- 输入框主体内容 start -->
             <div class="x-input-inner-warp">
                 <!-- 清除内容按钮 start -->
                 <transition name="fade">
-                    <i v-show="cleanable && value!==''" class="x-input-icon icon-btn icon-font icon-close-fill-bold icon-font14" @click="cleanInput()"></i>
+                    <i v-show="cleanable && value!==''"
+                       class="x-input-icon icon-btn icon-font icon-close-fill-bold icon-font14"
+                       @click="cleanInput()"></i>
                 </transition>
                 <!-- 清除内容按钮 //end -->
 
                 <!-- 前置icon---slot方式传入 start -->
-                <div v-if="prefix" class="x-input-prefix"><slot name="prefix"></slot></div>
+                <div v-if="prefix" class="x-input-prefix">
+                    <slot name="prefix"></slot>
+                </div>
                 <!-- 前置icon //end -->
 
                 <!-- 前置icon---通过props--prefixIcon属性传入 start -->
-                <div v-if="prefixIcon && !cleanable && !prefix" class="x-input-prefix"><i class="icon-font" :class="prefixIcon"></i></div>
+                <div v-if="prefixIcon && !cleanable && !prefix" class="x-input-prefix"><i class="icon-font"
+                                                                                          :class="prefixIcon"></i></div>
                 <!-- 前置icon---通过props--prefixIcon属性传入 //end -->
 
                 <!-- input start -->
@@ -45,18 +52,23 @@
                 <!-- input //end -->
 
                 <!-- 后置icon---slot方式传入 start -->
-                <div v-if="suffix && !cleanable" class="x-input-suffix" @click="handleClick"><slot name="suffix"></slot></div>
+                <div v-if="suffix && !cleanable" class="x-input-suffix" @click="handleClick">
+                    <slot name="suffix"></slot>
+                </div>
                 <!-- 后置icon---slot方式传入 //end -->
 
                 <!-- 后置icon---通过props--suffixIcon属性传入 start -->
-                <div v-if="suffixIcon && !cleanable && !suffix" class="x-input-suffix" @click="handleClick"><i class="icon-font" :class="suffixIcon"></i></div>
+                <div v-if="suffixIcon && !cleanable && !suffix" class="x-input-suffix" @click="handleClick"><i
+                    class="icon-font" :class="suffixIcon"></i></div>
                 <!-- 后置icon---通过props--suffixIcon属性传入 //end -->
 
             </div>
             <!-- 输入框主体内容 start -->
 
             <!-- 后置内容 start -->
-            <div v-if="append" class="x-input-append"><slot name="append"></slot></div>
+            <div v-if="append" class="x-input-append">
+                <slot name="append"></slot>
+            </div>
             <!-- 后置内容 //end -->
 
         </template>
@@ -67,7 +79,9 @@
             <div class="x-input-inner-warp">
                 <!-- 清除内容按钮 start -->
                 <transition name="fade">
-                    <i v-show="cleanable && value!==''" class="x-input-icon icon-btn icon-font icon-close-fill-bold icon-font14" @click="cleanInput()"></i>
+                    <i v-show="cleanable && value!==''"
+                       class="x-input-icon icon-btn icon-font icon-close-fill-bold icon-font14"
+                       @click="cleanInput()"></i>
                 </transition>
                 <!-- 清除内容按钮 //end -->
                 <textarea
@@ -89,7 +103,8 @@
         <!-- type是number start -->
         <template v-if="type === 'number'">
             <div class="x-input-inner-warp">
-                <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i class="icon-font icon-reduce icon-font18"></i></a>
+                <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i
+                    class="icon-font icon-reduce icon-font18"></i></a>
                 <!-- input start -->
                 <input
                     ref="number"
@@ -112,7 +127,8 @@
                     @keypress="handleKeypress"
                 />
                 <!-- input //end -->
-                <a href="javascript:" class="x-input-increase" @click="handleIncrease"><i class="icon-font icon-increase icon-font18"></i></a>
+                <a href="javascript:" class="x-input-increase" @click="handleIncrease"><i
+                    class="icon-font icon-increase icon-font18"></i></a>
             </div>
         </template>
         <!-- type是number //end -->
@@ -120,263 +136,225 @@
 </template>
 
 <script>
-/**
- * @props
- * -name         -type           -value                                  -default
- * value         string|number                                            ''
- * type          string          text / password / textarea / number     text
- * placeholder   string                                                  ''
- * size          string          s / m / l                               m
- * icon          string
- * maxlength     number
- * minlength     number
- * max           number
- * min           number                                                 infinity
- * disabled      boolean         true / false                            false
- * ...
- *
- * */
-const prefixCls = 'x-input';
-export default {
-    name: 'x-input',
-    props: {
-        value: {
-            type: [String, Number],
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'text'
-        },
-        placeholder: {
-            type: String,
-            default: ''
-        },
-        prefixIcon: {
-            type: String
-        },
-        suffixIcon: {
-            type: String
-        },
-        size: {
-            type: String,
-            default: 'm'
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        readonly: {
-            type: Boolean,
-            default: false
-        },
-        cleanable: {
-            type: Boolean,
-            default: false
-        },
-        rows: {
-            type: Number,
-            default: 2
-        },
-        minlength: {
-            type: Number,
-            default: 0
-        },
-        maxlength: {
-            type: Number
-        },
-        autocomplete: {
-            type: String,
-            default: 'off'
-        },
-        min: {
-            type: Number,
-            default: -Infinity //负无穷大
-        },
-        max: {
-            type: Number,
-            default: Infinity //正无穷大
-        },
-        step: {
-            type: Number,
-            default: 1
-        }
-    },
-    data() {
-        return {
-            currentValue: this.value,
-            prepend: false,
-            append: false,
-            prefix: false,
-            suffix: false,
-            timer: null
-        };
-    },
-    methods: {
-        handleInput (event) {
-            this.$emit('input', event.target.value);
-            this.setCurrentValue(event.target.value);
-        },
-        handleEnter (event) {
-            this.$emit('on-enter', event);
-        },
-        handleClick (event) {
-            this.$emit('on-click', event);
-        },
-        handleFocus () {
-            this.$emit('on-focus', event);
-        },
-        handleBlur () {
-            this.$emit('on-blur', event);
-        },
-        handleKeyup (event) {
-            // keyup 设置400ms的延迟
-            if(this.timer) {
-                clearTimeout(this.timer);
-            }
-            this.timer = setTimeout(() => {
-                this.$emit('on-keyup', event);
-            }, 400);
-        },
-        handleKeydown (event) {
-            this.$emit('on-keydown', event);
-        },
-        handleKeypress (event) {
-            this.$emit('on-keypress', event);
-        },
-        handleIncrease() { // 增加
-            let _total = this.accAdd(this.value, this.step);
-            if(_total > this.max) { return }
-            this.$emit('input', _total);
-            this.setCurrentValue(_total);
-        },
-        handleReduce() { // 减少
-            let _total = this.accSub(this.value, this.step);
-            if(_total < this.min) { return }
-            this.$emit('input', _total);
-            this.setCurrentValue(_total);
-        },
-        cleanInput(){
-            this.$emit('input', '');
-        },
-        setCurrentValue(val){
-            if (val === this.currentValue) return;
-            this.currentValue = val;
-        },
-        focus() {
-            if(this.type === 'textarea'){
-                this.$refs.textarea.focus();
-            }else{
-                this.$refs.input.focus();
+    /**
+     * @props
+     * -name         -type           -value                                  -default
+     * value         string|number                                            ''
+     * type          string          text / password / textarea / number     text
+     * placeholder   string                                                  ''
+     * size          string          s / m / l                               m
+     * icon          string
+     * maxlength     number
+     * minlength     number
+     * max           number
+     * min           number                                                 infinity
+     * disabled      boolean         true / false                            false
+     * ...
+     *
+     * */
+    const prefixCls = 'x-input';
+    import Utils from '../../utils/index';
+
+    export default {
+        name: 'x-input',
+        props: {
+            value: {
+                type: [String, Number],
+                default: ''
+            },
+            type: {
+                type: String,
+                default: 'text'
+            },
+            placeholder: {
+                type: String,
+                default: ''
+            },
+            prefixIcon: {
+                type: String
+            },
+            suffixIcon: {
+                type: String
+            },
+            size: {
+                type: String,
+                default: 'm'
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
+            readonly: {
+                type: Boolean,
+                default: false
+            },
+            cleanable: {
+                type: Boolean,
+                default: false
+            },
+            rows: {
+                type: Number,
+                default: 2
+            },
+            minlength: {
+                type: Number,
+                default: 0
+            },
+            maxlength: {
+                type: Number
+            },
+            autocomplete: {
+                type: String,
+                default: 'off'
+            },
+            min: {
+                type: Number,
+                default: -Infinity //负无穷大
+            },
+            max: {
+                type: Number,
+                default: Infinity //正无穷大
+            },
+            step: {
+                type: Number,
+                default: 1
             }
         },
-        blur() {
-            if(this.type === 'textarea'){
-                this.$refs.textarea.blur();
-            }else{
-                this.$refs.input.blur();
-            }
+        data() {
+            return {
+                currentValue: this.value,
+                prepend: false,
+                append: false,
+                prefix: false,
+                suffix: false,
+                timer: null
+            };
         },
-        accAdd(arg1, arg2) { //浮点数相加
-            let r1, r2, m;
-            try {
-                r1 = arg1.toString().split('.')[1].length;
-            } catch (e) {
-                r1 = 0
-            }
-            try {
-                r2 = arg2.toString().split('.')[1].length;
-            } catch (e) {
-                r2 = 0
-            }
-            m = Math.pow(10, Math.max(r1, r2));
-            return (this.accMul(arg1, m) + this.accMul(arg2, m)) / m;
-        },
-        accSub(arg1, arg2) { //浮点数相减
-            return this.accAdd(arg1, -arg2);
-        },
-        accMul(arg1, arg2) { //浮点数相乘
-            let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
-            try {
-                m += s1.split('.')[1].length;
-            } catch (e) {
-            }
-            try {
-                m += s2.split('.')[1].length;
-            } catch (e) {
-            }
-            return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m);
-        },
-        accDiv(arg1, arg2) { //浮点数相除精确计算
-            let t1 = 0, t2 = 0, r1, r2;
-            try {
-                t1 = arg1.toString().split('.')[1].length;
-            } catch (e) {
-            }
-            try {
-                t2 = arg2.toString().split('.')[1].length;
-            } catch (e) {
-            }
-            r1 = Number(arg1.toString().replace('.', ''));
-            r2 = Number(arg2.toString().replace('.', ''));
-            return (r1 / r2) * Math.pow(10, t2 - t1);
-        }
-    },
-    watch: {
-        value(val) {
-            this.setCurrentValue(val);
-        }
-    },
-    computed: {
-        inputClass() {
-            return [
-                [`${prefixCls}`],
-                [`${prefixCls}-default`],
-                {
-                    [`${prefixCls}-${this.size}`]: !!this.size,
-                    [`${prefixCls}-disabled`]: this.disabled,
-                    [`${prefixCls}-readonly`]: this.readonly,
-                    [`${prefixCls}-with-prefix`]: this.prefix || this.prefixIcon,
-                    [`${prefixCls}-with-suffix`]: this.suffix || this.suffixIcon,
-                    [`${prefixCls}-with-number`]: this.type === 'number'
+        methods: {
+            handleInput(event) {
+                this.$emit('input', event.target.value);
+                this.setCurrentValue(event.target.value);
+            },
+            handleEnter(event) {
+                this.$emit('on-enter', event);
+            },
+            handleClick(event) {
+                this.$emit('on-click', event);
+            },
+            handleFocus() {
+                this.$emit('on-focus', event);
+            },
+            handleBlur() {
+                this.$emit('on-blur', event);
+            },
+            handleKeyup(event) {
+                // keyup 设置400ms的延迟
+                if (this.timer) {
+                    clearTimeout(this.timer);
                 }
-            ];
-        },
-        textareaClass() {
-            return [
-                [`${prefixCls}`],
-                [`${prefixCls}-default`],
-                {
-                    [`${prefixCls}-${this.size}`]: !!this.size,
-                    [`${prefixCls}-disabled`]: this.disabled,
-                    [`${prefixCls}-readonly`]: this.readonly,
+                this.timer = setTimeout(() => {
+                    this.$emit('on-keyup', event);
+                }, 400);
+            },
+            handleKeydown(event) {
+                this.$emit('on-keydown', event);
+            },
+            handleKeypress(event) {
+                this.$emit('on-keypress', event);
+            },
+            handleIncrease() { // 增加
+                let _total = Utils.math.addition(this.value, this.step);
+                if (_total > this.max) {
+                    return
                 }
-            ];
-        },
-        warpClass() {
-            return [
-                `${prefixCls}-warp-${this.size}`,
-                {
-                    [`${prefixCls}-warp-textarea`]: this.type === 'textarea',
-                    [`${prefixCls}-warp-group`]: this.prepend || this.append,
-                    [`${prefixCls}-warp-group-prepend`]: this.prepend,
-                    [`${prefixCls}-warp-group-append`]: this.append
+                this.$emit('input', _total);
+                this.setCurrentValue(_total);
+            },
+            handleReduce() { // 减少
+                let _total = Utils.math.subtract(this.value, this.step);
+                if (_total < this.min) {
+                    return
                 }
-            ];
+                this.$emit('input', _total);
+                this.setCurrentValue(_total);
+            },
+            cleanInput() {
+                this.$emit('input', '');
+            },
+            setCurrentValue(val) {
+                if (val === this.currentValue) return;
+                this.currentValue = val;
+            },
+            focus() {
+                if (this.type === 'textarea') {
+                    this.$refs.textarea.focus();
+                } else {
+                    this.$refs.input.focus();
+                }
+            },
+            blur() {
+                if (this.type === 'textarea') {
+                    this.$refs.textarea.blur();
+                } else {
+                    this.$refs.input.blur();
+                }
+            }
+        },
+        watch: {
+            value(val) {
+                this.setCurrentValue(val);
+            }
+        },
+        computed: {
+            inputClass() {
+                return [
+                    [`${prefixCls}`],
+                    [`${prefixCls}-default`],
+                    {
+                        [`${prefixCls}-${this.size}`]: !!this.size,
+                        [`${prefixCls}-disabled`]: this.disabled,
+                        [`${prefixCls}-readonly`]: this.readonly,
+                        [`${prefixCls}-with-prefix`]: this.prefix || this.prefixIcon,
+                        [`${prefixCls}-with-suffix`]: this.suffix || this.suffixIcon,
+                        [`${prefixCls}-with-number`]: this.type === 'number'
+                    }
+                ];
+            },
+            textareaClass() {
+                return [
+                    [`${prefixCls}`],
+                    [`${prefixCls}-default`],
+                    {
+                        [`${prefixCls}-${this.size}`]: !!this.size,
+                        [`${prefixCls}-disabled`]: this.disabled,
+                        [`${prefixCls}-readonly`]: this.readonly,
+                    }
+                ];
+            },
+            warpClass() {
+                return [
+                    `${prefixCls}-warp-${this.size}`,
+                    {
+                        [`${prefixCls}-warp-textarea`]: this.type === 'textarea',
+                        [`${prefixCls}-warp-group`]: this.prepend || this.append,
+                        [`${prefixCls}-warp-group-prepend`]: this.prepend,
+                        [`${prefixCls}-warp-group-append`]: this.append
+                    }
+                ];
+            }
+        },
+        mounted() {
+            if (this.type !== 'textarea') {
+                this.prepend = this.$slots.prepend !== undefined;
+                this.append = this.$slots.append !== undefined;
+                this.prefix = this.$slots.prefix !== undefined;
+                this.suffix = this.$slots.suffix !== undefined;
+            } else {
+                this.prepend = false;
+                this.append = false;
+                this.prefix = false;
+                this.suffix = false;
+            }
         }
-    },
-    mounted() {
-        if (this.type !== 'textarea') {
-            this.prepend = this.$slots.prepend !== undefined;
-            this.append = this.$slots.append !== undefined;
-            this.prefix = this.$slots.prefix !== undefined;
-            this.suffix = this.$slots.suffix !== undefined;
-        } else {
-            this.prepend = false;
-            this.append = false;
-            this.prefix = false;
-            this.suffix = false;
-        }
-    }
-};
+    };
 </script>

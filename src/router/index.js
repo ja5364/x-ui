@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import ComponentExample from '@/example/input';
+import ExampleInput from '@/example/input';
+import ExampleRadio from '@/example/radio';
 
 Vue.use(Router);
 
@@ -10,7 +11,12 @@ export default new Router({
         {
             path: '/',
             name: 'example-input',
-            component: ComponentExample
-        }
+            component: ExampleInput
+        },
+        {
+            path: '/radio',
+            name: 'example-radio',
+            component: ExampleRadio
+        },
     ]
 });

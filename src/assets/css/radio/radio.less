@@ -18,8 +18,8 @@
         line-height: 1;
 
         .x-radio-inner {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             position: relative;
             left: 0;
             top: 0;
@@ -29,8 +29,8 @@
 
             &:after{
                 position: absolute;
-                width: 8px;
-                height: 8px;
+                width: 10px;
+                height: 10px;
                 left: 2px;
                 top: 2px;
                 border-radius: 6px;
@@ -56,10 +56,35 @@
                     transition: all .2s ease-in-out;
                 }
             }
+            &.x-radio-disabled {
+                cursor: not-allowed;
+                .x-radio-inner {
+                    background-color: @default-bg-color;
+                    border: 1px solid @default-border-color;
+                    &:after {
+                        position: absolute;
+                        width: 8px;
+                        height: 8px;
+                        left: 2px;
+                        top: 2px;
+                        border-radius: 6px;
+                        display: table;
+                        border-top: 0;
+                        border-left: 0;
+                        content: ' ';
+                        background-color: @default-border-color;
+                    }
+                }
+
+            }
         }
 
         &.x-radio-disabled {
             cursor: not-allowed;
+            .x-radio-inner {
+                background: @disabled-bg-color;
+            }
+
         }
 
         .x-radio-input {

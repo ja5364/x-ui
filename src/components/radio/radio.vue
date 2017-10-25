@@ -2,24 +2,24 @@
     <label :class="radioWarpClass">
         <span :class="radioClass">
             <span class="x-radio-inner"></span>
+            <!-- input start -->
             <input
-                ref="radio"
                 type="radio"
                 class="x-radio-input"
                 :class="radioInputClass"
-                :checked="currentValue"
-                :placeholder="placeholder"
+                :checked="checked"
                 :disabled="disabled"
+                :name="name"
+                :value="value ? value: ''"
                 @change="change"
             />
+            <!-- input //end -->
         </span>
-        <!-- input start -->
 
         <i class="icon-font"></i>
 
         <slot>{{ label }}</slot>
 
-        <!-- input //end -->
     </label>
 </template>
 
@@ -31,7 +31,7 @@
      * placeholder   string                                                  ''
      * size          string          s / m / l                               m
      * disabled      boolean         true / false                            false
-     * ...
+     * label
      *
      * */
     const prefixCls = 'x-radio';
@@ -62,35 +62,60 @@
             disabled: {
                 type: Boolean,
                 default: false
+            },
+            name: {
+                type: String
+            },
+            selectedValue: {
+                type: [String, Number, Boolean]
+            },
+            unselectedValue: {
+                type: [String, Number, Boolean]
             }
         },
         data() {
             return {
-                currentValue: this.value,
-                checked: false
+                currentValue: this.label,
+                checked: false,
+                parent: this.$parent.$options.name === 'x-radio-group' ? this.$parent : null,
+                group: false
             };
         },
         methods: {
-            handleInput(event) {
-                this.$emit('input', event.target.value);
-                this.setCurrentValue(event.target.value);
-            },
-            setCurrentValue(val) {
-                if (val === this.currentValue) return;
-                this.currentValue = val;
-            },
             change(event) {
-                if(this.disabled) {
-                    return false;
+                if(this.disabled) { return false; } //禁用状态，终止变更
+                const _checked = event.target.checked; //当前radio选中状态
+                if(!this.parent){ // 单选模式下，直接触发on-change，返回选中状态作为radio的值
+                    this.checked = _checked; //设置选中状态
+                    this.currentValue = this.checked; // 设置值
+                    this.$emit('input', _checked);
+                    this.$emit('on-change', _checked);
+                    return;
                 }
-                this.checked = event.target.checked;
-                this.$emit('input', event.target.checked);
-                this.setCurrentValue(event.target.checked);
+
+                if(this.group && this.label !== undefined) { //单选组模式，且label有值，通知单选组改值
+                    console.log(this.label, '------------radio');
+                    this.parent.change({
+                        value: this.label,
+                        checked: _checked
+                    });
+                }
+
+            },
+            updateValue () {
+                if(!this.group) {
+                    this.currentValue = this.checked;
+                }
+
+//                this.currentValue = this.value === this.selectedValue;
             }
         },
         watch: {
             value(val) {
-                this.setCurrentValue(val);
+//                if (val !== this.selectedValue && val !== this.unselectedValue) {
+//                    throw 'Value should be trueValue or falseValue.';
+//                }
+                this.updateValue();
             }
         },
         computed: {
@@ -106,6 +131,7 @@
             },
             radioInputClass() {
                 return [
+                    {[`${prefixCls}-input-checked`]: this.checked},
                     {[`${prefixCls}-input-disabled`]: this.disabled}
                 ];
             },
@@ -114,11 +140,15 @@
                     [`${prefixCls}-warp`],
                     {
                     [`${prefixCls}-warp-disabled`]: this.disabled,
-                    [`${prefixCls}-group-item`]: true
+                    [`${prefixCls}-group-item`]: this.group
                 }];
             }
         },
         mounted() {
+            if (this.parent) {
+                this.group = true;
+            }
+            !this.group ? this.updateValue() : this.parent.updateValue();
 
         }
     };

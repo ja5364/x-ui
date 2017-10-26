@@ -10,7 +10,7 @@
                 :checked="checked"
                 :disabled="disabled"
                 :name="name"
-                :value="value ? value: ''"
+                :value="group ? value : ''"
                 @change="change"
             />
             <!-- input //end -->
@@ -85,7 +85,9 @@
             change(event) {
                 if(this.disabled) { return false; } //禁用状态，终止变更
                 const _checked = event.target.checked; //当前radio选中状态
-                if(!this.parent){ // 单选模式下，直接触发on-change，返回选中状态作为radio的值
+
+                // 单选模式下，直接触发on-change，返回选中状态作为radio的值
+                if(!this.parent){
                     this.checked = _checked; //设置选中状态
                     this.currentValue = this.checked; // 设置值
                     this.$emit('input', _checked);
@@ -93,8 +95,8 @@
                     return;
                 }
 
-                if(this.group && this.label !== undefined) { //单选组模式，且label有值，通知单选组改值
-                    console.log(this.label, '------------radio');
+                //单选组模式，且label有值，通知单选组改值
+                if(this.group && this.label !== undefined) {
                     this.parent.change({
                         value: this.label,
                         checked: _checked
@@ -106,15 +108,11 @@
                 if(!this.group) {
                     this.currentValue = this.checked;
                 }
-
 //                this.currentValue = this.value === this.selectedValue;
             }
         },
         watch: {
-            value(val) {
-//                if (val !== this.selectedValue && val !== this.unselectedValue) {
-//                    throw 'Value should be trueValue or falseValue.';
-//                }
+            value() {
                 this.updateValue();
             }
         },

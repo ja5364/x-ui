@@ -40,7 +40,6 @@ export default {
     },
     methods: {
         change(data) {
-            console.log(data.value,'data.value');
             this.currentValue = data.value;
             this.checked = data.checked;
             this.updateValue();

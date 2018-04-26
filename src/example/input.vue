@@ -1,5 +1,6 @@
 <template>
     <div class="component-example">
+        <router-view></router-view>
         <div class="row">
             <div class="col-3">
                 <x-input

@@ -1,0 +1,39 @@
+.x-switch {
+    display: inline-block;
+    .x-switch-btn {
+        position: relative;
+        padding: 5px 20px;
+        min-width: 70px;
+        cursor: pointer;
+        border-radius: @border-radius-width-m;
+        border: 1px solid @default-border-color;
+        background: #fff;
+        text-align: right;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 1px;
+            top: 1px;
+            border-radius: @border-radius-width-m;
+            background: @disabled-bg-color;
+            width: 30px;
+            height: 100%;
+        }
+
+        &.active {
+            text-align: right;
+
+            &:before {
+                content: '';
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                background: @success-bg-color;
+                border-radius: @border-radius-width-m;
+                width: 30px;
+                height: 100%;
+            }
+        }
+    }
+}

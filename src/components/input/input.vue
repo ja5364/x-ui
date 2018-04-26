@@ -1,3 +1,7 @@
+/*
+* created by simon on 2017/12/17
+*
+*/
 <template>
     <div class="x-input-warp" :class="warpClass">
         <!-- type是text start -->
@@ -75,7 +79,7 @@
         <!-- type是text //end -->
 
         <!-- type是textarea start -->
-        <template v-if="type === 'textarea'">
+        <template v-else-if="type === 'textarea'">
             <div class="x-input-inner-warp">
                 <!-- 清除内容按钮 start -->
                 <transition name="fade">
@@ -101,7 +105,7 @@
         <!-- type是textarea //end -->
 
         <!-- type是number start -->
-        <template v-if="type === 'number'">
+        <template v-else-if="type === 'number'">
             <div class="x-input-inner-warp">
                 <a href="javascript:" class="x-input-reduce" @click="handleReduce"><i
                     class="icon-font icon-reduce icon-font18"></i></a>
